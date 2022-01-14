@@ -47,10 +47,10 @@ func errorResults(sut Failure, t *testing.T) {
 		return
 	}
 
-	if !errors.Is(err, DeferredError("second defer")) {
+	if !errors.Is(err, DeferredError{msg: "second defer"}) {
 		t.Errorf("want %v to contain DeferredError('second defer')", err)
 	}
-	if !errors.Is(err, DeferredError("first defer")) {
+	if !errors.Is(err, DeferredError{msg: "first defer"}) {
 		t.Errorf("want %v to contain DeferredError('first defer')", err)
 	}
 }
