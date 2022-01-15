@@ -1,26 +1,26 @@
-package main
+package playground
 
 import "fmt"
 
 // DeferredError is an error type indicating that something failed in `defer`
 type DeferredError struct {
-	msg string
-	e   error
+	Msg string
+	E   error
 }
 
 // Error() implementes the error interface
 func (e DeferredError) Error() string {
-	return fmt.Sprintf("deferred error: %q", e.msg)
+	return fmt.Sprintf("deferred error: %q", e.Msg)
 }
 
 func (e DeferredError) Unwrap() error {
-	return e.e
+	return e.E
 }
 
 func (e DeferredError) Is(err error) bool {
 	de, ok := err.(DeferredError)
 	if ok {
-		return de.msg == e.msg
+		return de.Msg == e.Msg
 	}
 	return false
 }
@@ -53,9 +53,9 @@ func (f *Failure) FailingFunc(failsDefer bool) (err error) {
 // addError returns an error.
 // Depending on the configuration of Failure this error may wrap the oldErr.
 func (f *Failure) addError(value string, oldErr error) error {
-	err := DeferredError{msg: value}
+	err := DeferredError{Msg: value}
 	if f.WrapsErr {
-		err.e = oldErr
+		err.E = oldErr
 	}
 	// I'd love to wrap `oldErr` to the given `DeferredError` type…
 	return err
